@@ -28,13 +28,13 @@ public class DataHelper {
         return new VerificationCode("12345");
     }
 
-    public static MoneyTransfer getFirstCardInfo(int amount) {
-        return new MoneyTransfer("5559 0000 0000 0001","0",amount);
+    public static MoneyTransfer getFirstCardInfo() {
+        return new MoneyTransfer("5559 0000 0000 0001","0");
 
     }
 
-    public static MoneyTransfer getSecondCardInfo(int amount) {
-        return new MoneyTransfer("5559 0000 0000 0002","1",amount);
+    public static MoneyTransfer getSecondCardInfo() {
+        return new MoneyTransfer("5559 0000 0000 0002","1");
 
     }
 
@@ -42,7 +42,7 @@ public class DataHelper {
     public static class MoneyTransfer {
         private String cardNumber;
         private String id;
-        private int amount;
+
     }
 }
 
