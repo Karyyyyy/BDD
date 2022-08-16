@@ -8,6 +8,7 @@ import ru.netology.page.TransferMoneyPage;
 
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MoneyTransferTest {
     @Test
@@ -51,29 +52,28 @@ public class MoneyTransferTest {
         assertEquals(balanceFirstCard, balanceFirstCard);
         assertEquals(balanceSecondCard, balanceSecondCard);
     }
+
     @Test
     void shouldNoTransferMoneyOverLimit() {
-
         open("http://localhost:9999");
         var loginPage = new LoginPage();
         var authInfo = DataHelper.getAuthInfo();
         var verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         loginPage.validLogin(authInfo).validVerification(verificationCode);
 
-        int amount = 150000;
         var cardInfoFirst = DataHelper.getFirstCardInfo();
         var cardInfoSecond = DataHelper.getSecondCardInfo();
 
         var dashboard = new DashboardPage();
-        dashboard.changeCard(1).shouldMoneyInfo(cardInfoFirst, amount);
-        int currentBalanceFirstCard= dashboard.getCardBalance("0");
-        int currentBalanceSecondCard= dashboard.getCardBalance("1");
+        int amount = (dashboard.getCardBalance("1") + 150000);
 
-        var transfer=new TransferMoneyPage();
-        if(currentBalanceFirstCard<0){
-            transfer.shouldNoNegativeBalance(cardInfoFirst);
-        } else if (currentBalanceSecondCard<0) {
-            transfer.shouldNoNegativeBalance(cardInfoSecond);
-        }
+        dashboard.changeCard(1).shouldNoNegativeBalance(cardInfoFirst);
+        int currentBalanceFirstCard = dashboard.getCardBalance("0");
+        int currentBalanceSecondCard = dashboard.getCardBalance("1");
+
+        assertTrue(currentBalanceFirstCard > 0 && currentBalanceSecondCard > 0);
+
+        assertEquals(currentBalanceFirstCard, currentBalanceFirstCard + amount);
+        assertEquals(currentBalanceSecondCard, currentBalanceSecondCard - amount);
     }
 }
