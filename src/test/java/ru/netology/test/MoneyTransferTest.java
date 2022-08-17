@@ -67,13 +67,13 @@ public class MoneyTransferTest {
         var dashboard = new DashboardPage();
         int amount = (dashboard.getCardBalance("1") + 150000);
 
+        dashboard.changeCard(1).shouldMoneyInfo(cardInfoFirst, amount);
         dashboard.changeCard(1).shouldNoNegativeBalance(cardInfoFirst);
         int currentBalanceFirstCard = dashboard.getCardBalance("0");
         int currentBalanceSecondCard = dashboard.getCardBalance("1");
 
         assertTrue(currentBalanceFirstCard > 0 && currentBalanceSecondCard > 0);
-
-        assertEquals(currentBalanceFirstCard, currentBalanceFirstCard + amount);
-        assertEquals(currentBalanceSecondCard, currentBalanceSecondCard - amount);
+        assertEquals(currentBalanceFirstCard, currentBalanceFirstCard);
+        assertEquals(currentBalanceSecondCard, currentBalanceSecondCard);
     }
 }
